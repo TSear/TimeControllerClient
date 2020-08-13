@@ -9,6 +9,13 @@ public class ApplicationModel{
 	private Long timeSpendInSeconds;
 	private Long kontoId;
 	
+	
+	public ApplicationModel(String applicationName, Long timeSpendInSeconds, Long kontoId) {
+		this.applicationName = applicationName;
+		this.timeSpendInSeconds = timeSpendInSeconds;
+		this.kontoId = kontoId;
+	}
+	
 	public String getApplicationName() {
 		return applicationName;
 	}

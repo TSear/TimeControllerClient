@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class AuthenticationTmp {
 
-	private boolean loginFlag;
-	private Long id;
+	private boolean loginFlag = false;
+	private Long id = 0l;
 	
 }

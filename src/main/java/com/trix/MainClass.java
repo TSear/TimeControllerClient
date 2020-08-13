@@ -8,7 +8,7 @@ import com.trix.serverAccess.SAInterfaceImpl;
 
 public class MainClass {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws Exception{
 		
 		loop mainLoop = new loop();
 		mainLoop.mainApplicationLoop();

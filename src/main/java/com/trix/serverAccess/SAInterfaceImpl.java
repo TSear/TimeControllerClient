@@ -7,7 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.trix.model.ApplicationModel;
+import com.trix.model.ApplicationWrapper;
 import com.trix.model.AuthenticationTmp;
 
 import okhttp3.MediaType;
@@ -53,6 +56,19 @@ public class SAInterfaceImpl implements SAInterface {
 		AuthenticationTmp at = om.readValue(response.body().string(), AuthenticationTmp.class);
 		
 		return at;
+	}
+
+	@Override
+	public void save(ApplicationWrapper appWrap) throws Exception{
+		
+		String jsonToSend = new Gson().toJson(appWrap);
+		RequestBody rb = RequestBody.create(jsonToSend, JSON);
+		Request rq = new Request.Builder()
+				.url("http://localhost:8080/application/new")
+				.post(rb)
+				.build();
+		Response response = client.newCall(rq).execute();
+		response.close();
 	}
 
 }
