@@ -9,5 +9,5 @@ public class AuthenticationTmp {
 
 	private boolean loginFlag = false;
 	private Long id = 0l;
-	
+	private String token;
 }

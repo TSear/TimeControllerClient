@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.transform.Source;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -26,12 +28,15 @@ public class SAInterfaceImpl implements SAInterface {
 	private OkHttpClient client = new OkHttpClient();
 	private ObjectMapper om = new ObjectMapper();
 	private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-	
+	private AuthenticationTmp auth = new AuthenticationTmp();
+	private String token = "";
+
 	@Override
 	public List<ApplicationModel> getAllData(Long id) throws IOException{
 		
 		Request rq = new Request.Builder()
 				.url("http://localhost:8080/application/account/"+id)
+				.header("Authorization", this.token)
 				.build();
 		
 			Response response = client.newCall(rq).execute();
@@ -54,7 +59,7 @@ public class SAInterfaceImpl implements SAInterface {
 		
 		Response response = client.newCall(request).execute();
 		AuthenticationTmp at = om.readValue(response.body().string(), AuthenticationTmp.class);
-		
+		token = "Bearer "+at.getToken();
 		return at;
 	}
 
@@ -63,9 +68,11 @@ public class SAInterfaceImpl implements SAInterface {
 		
 		String jsonToSend = new Gson().toJson(appWrap);
 		RequestBody rb = RequestBody.create(jsonToSend, JSON);
+		System.out.println(rb.toString());
 		Request rq = new Request.Builder()
 				.url("http://localhost:8080/application/new")
 				.post(rb)
+				.header("Authorization", this.token)
 				.build();
 		Response response = client.newCall(rq).execute();
 		response.close();
