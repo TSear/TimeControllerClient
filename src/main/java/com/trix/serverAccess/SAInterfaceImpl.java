@@ -10,7 +10,9 @@ import javax.xml.transform.Source;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.trix.model.ApplicationModel;
 import com.trix.model.ApplicationWrapper;
 import com.trix.model.AuthenticationTmp;
@@ -51,8 +53,12 @@ public class SAInterfaceImpl implements SAInterface {
 	@Override
 	public AuthenticationTmp login(String login, String haslo) throws IOException{
 		
-		String jsonToSend = "{\"username\": \""+login+"\",\"password\": \""+haslo+"\"}";
-		RequestBody rb = RequestBody.create(jsonToSend, JSON);
+		JsonObject loginData = new JsonObject();
+		loginData.addProperty("username", login);
+		loginData.addProperty("password", haslo);
+		System.out.println(loginData);
+		
+		RequestBody rb = RequestBody.create(new Gson().toJson(loginData), JSON);
 		Request request = new Request.Builder().url("http://localhost:8080/account/login")
 				.post(rb)
 				.build();
@@ -66,7 +72,8 @@ public class SAInterfaceImpl implements SAInterface {
 	@Override
 	public void save(ApplicationWrapper appWrap) throws Exception{
 		
-		String jsonToSend = new Gson().toJson(appWrap);
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+		String jsonToSend = gson.toJson(appWrap);
 		RequestBody rb = RequestBody.create(jsonToSend, JSON);
 		System.out.println(rb.toString());
 		Request rq = new Request.Builder()

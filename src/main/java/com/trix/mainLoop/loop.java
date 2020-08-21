@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.apache.lucene.queryparser.classic.CharStream;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -38,11 +39,13 @@ public class loop {
 	public void mainApplicationLoop() throws Exception{
 		
 		while(!authTmp.isLoginFlag()) {
-			System.out.println("\\n");
 			System.out.println("Podaj login: ");
-			login = scanner.next();
+			login = Pattern.quote(scanner.next());
+			login = login.substring(2,login.length()-2);
 			System.out.println("Podaj haslo: ");
-			haslo = scanner.next();
+			haslo = Pattern.quote(scanner.next());
+			haslo = haslo.substring(2, haslo.length()-2);
+			System.out.println(login);
 			
 			AuthenticationTmp at = dataAccess.login(login, haslo);
 			authTmp.setId(at.getId());
