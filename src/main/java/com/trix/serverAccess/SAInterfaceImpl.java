@@ -37,7 +37,7 @@ public class SAInterfaceImpl implements SAInterface {
 	public List<ApplicationModel> getAllData(Long id) throws IOException{
 		
 		Request rq = new Request.Builder()
-				.url("http://localhost:8080/application/account/"+id)
+				.url("http://localhost:8080/api/application/account/"+id)
 				.header("Authorization", this.token)
 				.build();
 		
@@ -56,16 +56,15 @@ public class SAInterfaceImpl implements SAInterface {
 		JsonObject loginData = new JsonObject();
 		loginData.addProperty("username", login);
 		loginData.addProperty("password", haslo);
-		System.out.println(loginData);
 		
 		RequestBody rb = RequestBody.create(new Gson().toJson(loginData), JSON);
-		Request request = new Request.Builder().url("http://localhost:8080/account/login")
+		Request request = new Request.Builder().url("http://localhost:8080/api/account/login")
 				.post(rb)
 				.build();
 		
 		Response response = client.newCall(request).execute();
 		AuthenticationTmp at = om.readValue(response.body().string(), AuthenticationTmp.class);
-		token = "Bearer "+at.getToken();
+		token = at.getToken();
 		return at;
 	}
 
@@ -75,9 +74,8 @@ public class SAInterfaceImpl implements SAInterface {
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		String jsonToSend = gson.toJson(appWrap);
 		RequestBody rb = RequestBody.create(jsonToSend, JSON);
-		System.out.println(rb.toString());
 		Request rq = new Request.Builder()
-				.url("http://localhost:8080/application/new")
+				.url("http://localhost:8080/api/application/new")
 				.post(rb)
 				.header("Authorization", this.token)
 				.build();

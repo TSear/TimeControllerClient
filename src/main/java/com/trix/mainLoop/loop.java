@@ -55,7 +55,6 @@ public class loop {
 		while(true) {	
 			Thread.sleep(cycleLenght*1000);
 			appWrapper.getApplicationList().add(new ApplicationModel(wnr.read(),Long.parseLong(cycleLenght+""),authTmp.getId()));
-			System.out.println(LocalTime.now());
 			cycle++;
 			if(cycle == 2) {
 				dataAccess.save(appWrapper);
